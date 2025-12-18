@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>裁员赔偿计算器 · AI对比评测</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    h1 { color: #333; margin-bottom: 10px; }
+    .subtitle { color: #666; font-size: 14px; margin-bottom: 30px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; }
+    button { width: 100%; padding: 15px; background: #667eea; color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #5a67d8; transform: translateY(-2px); }
+    .results { margin-top: 30px; display: none; }
+    .ai-card { background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 15px; }
+    .ai-name { font-weight: 700; color: #2d3748; margin-bottom: 10px; }
+    .ai-result { background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #667eea; }
+    .loading { color: #666; font-style: italic; }
+    .error { color: #e53e3e; }
+    .cta { margin-top: 30px; padding: 20px; background: #fef5e7; border-radius: 8px; text-align: center; }
+    .cta button { background: #ed8936; width: auto; padding: 12px 30px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>程序员裁员赔偿计算器</h1>
+    <p class="subtitle">AI工具对比评测版 · 帮你识别哪个更靠谱</p>
+    
+    <div class="form-group">
+      <label>税前月工资（元）</label>
+      <input type="number" id="salary" placeholder="20000">
+    </div>
+    
+    <div class="form-group">
+      <label>工作年限（年，支持小数）</label>
+      <input type="number" id="years" placeholder="3.5" step="0.1">
+    </div>
+    
+    <div class="form-group">
+      <label>公司是否提前30天通知？</label>
+      <select id="notice">
+        <option value="yes">已提前30天通知</option>
+        <option value="no">未提前通知（+1个月代通知金）</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>裁员性质</label>
+      <select id="reason">
+        <option value="normal">协商一致/经济性裁员（N倍）</option>
+        <option value="illegal">违法解除（2N倍）</option>
+      </select>
+    </div>
+    
+    <button onclick="calculateAll()">启动AI对比评测</button>
+    
+    <div class="results" id="results">
+      <h3 style="margin-bottom: 20px;">🤖 AI工具计算结果对比</h3>
+      <div id="ai-results"></div>
+      
+      <div class="cta">
+        <h4>💡 结果差异太大？不知道信哪个？</h4>
+        <p>支付 ¥9.9 获取完整解读报告</p>
+        <button onclick="unlockReport()">解锁详细分析</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cloudflare Worker地址（Step 3配置后替换）
+    const WORKER_URL = 'https://your-worker.your-subdomain.workers.dev';
+    
+    async function calculateAll() {
+      const salary = document.getElementById('salary').value;
+      const years = document.getElementById('years').value;
+      const notice = document.getElementById('notice').value;
+      const reason = document.getElementById('reason').value;
+      
+      if (!salary || !years) {
+        alert('请填写完整信息');
+        return;
+      }
+      
+      const prompt = `请计算劳动赔偿金：月工资${salary}元，工作${years}年，${notice === 'no' ? '未提前通知' : '已提前通知'}，${reason === 'illegal' ? '违法解除' : '协商解除'}。请给出具体金额、计算过程、法律依据。`;
+      
+      document.getElementById('results').style.display = 'block';
+      const container = document.getElementById('ai-results');
+      container.innerHTML = `
+        <div class="ai-card">
+          <div class="ai-name">🤖 文心一言</div>
+          <div class="ai-result loading" id="wenxin">正在调用API...</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-name">🤖 手动计算（基准）</div>
+          <div class="ai-result" id="manual">${manualCalc(salary, years, notice, reason)}</div>
+        </div>
+      `;
+      
+      // 调用文心一言
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt })
+        });
+        const data = await response.json();
+        document.getElementById('wenxin').innerHTML = data.result || '<span class="error">API调用失败</span>';
+      } catch(e) {
+        document.getElementById('wenxin').innerHTML = '<span class="error">网络错误，请检查Worker配置</span>';
+      }
+    }
+    
+    function manualCalc(salary, years, notice, reason) {
+      let n = parseFloat(years);
+      let base = salary * n;
+      if (notice === 'no') base += parseFloat(salary);
+      if (reason === 'illegal') base *= 2;
+      return `赔偿金额：¥${base.toLocaleString()}<br>计算逻辑：${salary}×${n}${notice === 'no' ? '+1个月代通知金' : ''}${reason === 'illegal' ? '×2（违法解除）' : ''}`;
+    }
+    
+    function unlockReport() {
+      alert('支付功能需接入微信支付，当前为演示版。\n\n实际运营建议：\n1. 引导用户添加个人微信\n2. 微信支付9.9元\n3. 手动发送PDF模板');
+    }
+  </script>
+</body>
+</html>
