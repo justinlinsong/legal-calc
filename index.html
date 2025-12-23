@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>裁员赔偿计算器 · AI评测版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <title>俄罗斯方块游戏 - 支持手机端</title>
   <style>
     * {
       margin: 0;
@@ -11,272 +12,630 @@
     }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 20px;
-      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      margin: 0;
+      overflow: hidden;
     }
     
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.98);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
     h1 {
-      font-size: 2.5rem;
-      color: #2d3748;
-      margin-bottom: 10px;
+      text-align: center;
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+    
+    .game-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    
+    #gameCanvas {
+      border: 3px solid #333;
+      border-radius: 8px;
+      background: #111;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      object-fit: contain;
+    }
+    
+    .info-panel {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      gap: 10px;
+    }
+    
+    .info-card {
+      flex: 1;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
     
-    .subtitle {
-      text-align: center;
-      color: #718096;
-      margin-bottom: 40px;
-      font-size: 1.1rem;
-    }
-    
-    .form-group {
-      margin-bottom: 25px;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
+    .info-card h3 {
+      font-size: 0.85em;
+      color: #666;
+      margin-bottom: 5px;
       font-weight: 600;
-      color: #4a5568;
     }
     
-    input, select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: all 0.3s ease;
+    .info-card .value {
+      font-size: 1.4em;
+      color: #667eea;
+      font-weight: bold;
     }
     
-    input:focus, select:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    
-    button {
-      width: 100%;
-      padding: 15px;
+    .btn-primary {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 600;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      margin-bottom: 15px;
+      font-weight: bold;
     }
     
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
     }
     
-    button:active {
+    .btn-primary:active {
       transform: translateY(0);
     }
     
-    .results {
+    /* 电脑端控制说明 (大屏显示) */
+    .desktop-controls {
       display: none;
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 2px solid #e2e8f0;
-    }
-    
-    h3 {
-      margin-bottom: 25px;
-      color: #2d3748;
-      font-size: 1.5rem;
-    }
-    
-    .ai-card {
-      background: #f7fafc;
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 15px;
-      border-left: 4px solid #667eea;
-      transition: all 0.3s ease;
-    }
-    
-    .ai-card:hover {
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .ai-name {
-      font-weight: 600;
-      color: #2d3748;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-    }
-    
-    .ai-result {
-      color: #4a5568;
-      line-height: 1.6;
-    }
-    
-    .loading {
-      color: #718096;
-      font-style: italic;
-    }
-    
-    .error {
-      color: #e53e3e;
-    }
-    
-    .cta {
-      background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-      border-radius: 15px;
-      padding: 25px;
-      margin-top: 30px;
       text-align: center;
-      color: white;
-    }
-    
-    .cta h4 {
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-    }
-    
-    .cta p {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
       margin-bottom: 15px;
-      opacity: 0.95;
     }
     
-    .cta button {
-      background: white;
-      color: #19547b;
-      width: auto;
-      padding: 10px 30px;
-      font-size: 16px;
+    .desktop-controls h3 {
+      margin-bottom: 8px;
+      color: #333;
+      font-size: 1em;
     }
     
-    .cta button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    .desktop-controls p {
+      margin: 4px 0;
+      color: #666;
+      font-size: 0.9em;
+    }
+    
+    /* 移动端虚拟按键 (小屏显示) */
+    .mobile-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .mobile-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 18px;
+      font-size: 1.3em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 3px 10px rgba(102, 126, 234, 0.5);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      font-weight: bold;
+      min-height: 60px;
+    }
+    
+    .mobile-btn:active {
+      background: linear-gradient(135deg, #5a67d8 0%, #6b469a 100%);
+      transform: scale(0.95);
+      box-shadow: 0 1px 5px rgba(102, 126, 234, 0.4);
+    }
+    
+    .mobile-btn.rotate {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    
+    .mobile-btn.left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    
+    .mobile-btn.right {
+      grid-column: 3;
+      grid-row: 2;
+    }
+    
+    .mobile-btn.down {
+      grid-column: 2;
+      grid-row: 2;
+    }
+    
+    .mobile-btn.hard-drop {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      padding: 15px;
+      font-size: 1em;
+    }
+    
+    /* 响应式断点 - 桌面设备优化 */
+    @media (min-width: 769px) {
+      .container {
+        max-width: none;
+        padding: 25px;
+      }
+      
+      h1 {
+        font-size: 2.5em;
+      }
+      
+      #gameCanvas {
+        max-width: 300px;
+        height: 600px;
+      }
+      
+      .info-panel {
+        justify-content: center;
+        gap: 20px;
+      }
+      
+      .info-card {
+        padding: 15px 25px;
+      }
+      
+      .info-card h3 {
+        font-size: 1em;
+      }
+      
+      .info-card .value {
+        font-size: 1.6em;
+      }
+      
+      .desktop-controls {
+        display: block;
+      }
+      
+      .mobile-controls {
+        display: none;
+      }
+    }
+    
+    /* 小屏设备优化 */
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+      
+      #gameCanvas {
+        max-width: 100%;
+      }
+      
+      .info-panel {
+        gap: 5px;
+      }
+      
+      .info-card {
+        padding: 8px 10px;
+      }
+      
+      .info-card h3 {
+        font-size: 0.75em;
+      }
+      
+      .info-card .value {
+        font-size: 1.2em;
+      }
+      
+      .mobile-btn {
+        padding: 15px;
+        font-size: 1.2em;
+        min-height: 50px;
+      }
+    }
+    
+    /* 游戏按钮居中 */
+    .game-controls {
+      display: flex;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>程序员裁员赔偿计算器</h1>
-    <p class="subtitle">AI工具对比评测版 · 帮你识别哪个更靠谱</p>
+    <h1>🎮 俄罗斯方块</h1>
     
-    <!-- 表单区域 -->
-    <div class="form-group">
-      <label>税前月工资（元）</label>
-      <input type="number" id="salary" placeholder="20000">
-    </div>
-    
-    <div class="form-group">
-      <label>工作年限（年）</label>
-      <input type="number" id="years" placeholder="3.5" step="0.1">
-    </div>
-    
-    <div class="form-group">
-      <label>公司是否提前30天通知？</label>
-      <select id="notice">
-        <option value="yes">已提前30天通知</option>
-        <option value="no">未提前通知（+1个月代通知金）</option>
-      </select>
-    </div>
-    
-    <div class="form-group">
-      <label>裁员性质</label>
-      <select id="reason">
-        <option value="normal">协商一致/经济性裁员（N倍）</option>
-        <option value="illegal">违法解除（2N倍）</option>
-      </select>
-    </div>
-    
-    <button onclick="calculateAll()">启动AI对比评测</button>
-    
-    <!-- 结果展示区域 -->
-    <div class="results" id="results">
-      <h3>🤖 AI工具计算结果对比</h3>
-      <div id="ai-results"></div>
-      
-      <div class="cta">
-        <h4>💡 结果差异太大？</h4>
-        <p>支付 ¥9.9 获取《AI结果避坑指南》PDF</p>
-        <button onclick="unlockReport()">解锁详细分析</button>
+    <div class="info-panel">
+      <div class="info-card">
+        <h3>分数</h3>
+        <div class="value" id="score">0</div>
       </div>
+      <div class="info-card">
+        <h3>等级</h3>
+        <div class="value" id="level">1</div>
+      </div>
+      <div class="info-card">
+        <h3>行数</h3>
+        <div class="value" id="lines">0</div>
+      </div>
+    </div>
+    
+    <div class="game-wrapper">
+      <canvas id="gameCanvas" width="300" height="600"></canvas>
+    </div>
+    
+    <div class="game-controls">
+      <button class="btn-primary" onclick="startGame()">开始游戏</button>
+    </div>
+    
+    <div class="desktop-controls">
+      <h3>键盘控制说明</h3>
+      <p>← → 移动方块 | ↑ 旋转方块 | ↓ 加速下落 | 空格 直接下落</p>
+    </div>
+    
+    <!-- 移动端虚拟按键 -->
+    <div class="mobile-controls">
+      <button class="mobile-btn rotate" onclick="handleMobileRotate(event)" ontouchstart="handleMobileRotate(event)">↻</button>
+      
+      <button class="mobile-btn left" onclick="handleMobileMove(-1, event)" ontouchstart="handleMobileMove(-1, event)">←</button>
+      <button class="mobile-btn down" onclick="handleMobileDrop(event)" ontouchstart="handleMobileDrop(event)">↓</button>
+      <button class="mobile-btn right" onclick="handleMobileMove(1, event)" ontouchstart="handleMobileMove(1, event)">→</button>
+      
+      <button class="mobile-btn hard-drop" onclick="handleMobileHardDrop(event)" ontouchstart="handleMobileHardDrop(event)">直接下落</button>
     </div>
   </div>
 
   <script>
-    // ✅ 替换为你的Worker地址
-    const WORKER_URL = 'https://legal-calc-api.your-subdomain.workers.dev';
+    // 游戏常量
+    const ROWS = 20;
+    const COLS = 10;
+    const BLOCK_SIZE = 30;
+    const CANVAS_WIDTH = COLS * BLOCK_SIZE;
+    const CANVAS_HEIGHT = ROWS * BLOCK_SIZE;
     
-    async function calculateAll() {
-      const salary = document.getElementById('salary').value;
-      const years = document.getElementById('years').value;
-      
-      if (!salary || !years) {
-        alert('请填写完整信息');
-        return;
+    // 方块形状定义
+    const SHAPES = {
+      I: [[1, 1, 1, 1]],
+      O: [[1, 1], [1, 1]],
+      T: [[0, 1, 0], [1, 1, 1]],
+      S: [[0, 1, 1], [1, 1, 0]],
+      Z: [[1, 1, 0], [0, 1, 1]],
+      J: [[1, 0, 0], [1, 1, 1]],
+      L: [[0, 0, 1], [1, 1, 1]]
+    };
+    
+    // 方块颜色
+    const COLORS = {
+      I: '#00f0f0',
+      O: '#f0f000',
+      T: '#a000f0',
+      S: '#00f000',
+      Z: '#f00000',
+      J: '#0000f0',
+      L: '#f0a000'
+    };
+    
+    let canvas, ctx;
+    let board;
+    let score = 0;
+    let level = 1;
+    let lines = 0;
+    let currentPiece;
+    let gameLoop;
+    let gameRunning = false;
+    let dropInterval = 1000;
+    let lastDropTime = 0;
+    
+    // 初始化游戏
+    function init() {
+      canvas = document.getElementById('gameCanvas');
+      ctx = canvas.getContext('2d');
+      canvas.width = CANVAS_WIDTH;
+      canvas.height = CANVAS_HEIGHT;
+      resetBoard();
+    }
+    
+    // 重置游戏板
+    function resetBoard() {
+      board = Array(ROWS).fill(null).map(() => Array(COLS).fill(0));
+    }
+    
+    // 随机生成新方块
+    function getRandomPiece() {
+      const shapeKeys = Object.keys(SHAPES);
+      const shape = shapeKeys[Math.floor(Math.random() * shapeKeys.length)];
+      return {
+        shape: SHAPES[shape],
+        color: COLORS[shape],
+        x: Math.floor(COLS / 2) - Math.floor(SHAPES[shape][0].length / 2),
+        y: 0
+      };
+    }
+    
+    // 碰撞检测
+    function collision(piece, newX, newY) {
+      for (let y = 0; y < piece.shape.length; y++) {
+        for (let x = 0; x < piece.shape[y].length; x++) {
+          if (piece.shape[y][x]) {
+            const boardX = newX + x;
+            const boardY = newY + y;
+            if (boardX < 0 || boardX >= COLS || boardY >= ROWS) return true;
+            if (boardY >= 0 && board[boardY][boardX]) return true;
+          }
+        }
+      }
+      return false;
+    }
+    
+    // 将方块合并到游戏板
+    function merge(piece) {
+      for (let y = 0; y < piece.shape.length; y++) {
+        for (let x = 0; x < piece.shape[y].length; x++) {
+          if (piece.shape[y][x]) {
+            const boardY = piece.y + y;
+            const boardX = piece.x + x;
+            if (boardY >= 0) {
+              board[boardY][boardX] = piece.color;
+            }
+          }
+        }
+      }
+    }
+    
+    // 清除完整行
+    function clearLines() {
+      let linesCleared = 0;
+      for (let y = ROWS - 1; y >= 0; y--) {
+        if (board[y].every(cell => cell !== 0)) {
+          board.splice(y, 1);
+          board.unshift(Array(COLS).fill(0));
+          linesCleared++;
+          y++;
+        }
       }
       
-      const prompt = `请计算劳动赔偿金：月工资${salary}元，工作${years}年，${document.getElementById('notice').value === 'no' ? '未提前通知' : '已提前通知'}，${document.getElementById('reason').value === 'illegal' ? '违法解除' : '协商解除'}。请给出具体金额、计算过程、法律依据。`;
-      
-      document.getElementById('results').style.display = 'block';
-      const container = document.getElementById('ai-results');
-      
-      // 展示手动计算结果
-      container.innerHTML = `
-        <div class="ai-card">
-          <div class="ai-name">📊 手动计算（基准）</div>
-          <div class="ai-result">${manualCalc()}</div>
-        </div>
-        <div class="ai-card">
-          <div class="ai-name">🤖 文心一言</div>
-          <div class="ai-result loading" id="wenxin">正在调用AI...</div>
-        </div>
-      `;
-      
-      // 调用AI
-      try {
-        const response = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt })
-        });
-        const data = await response.json();
-        document.getElementById('wenxin').innerHTML = data.result;
-      } catch(e) {
-        document.getElementById('wenxin').innerHTML = `<span class="error">调用失败: ${e.message}</span>`;
+      if (linesCleared > 0) {
+        lines += linesCleared;
+        score += [0, 100, 300, 500, 800][linesCleared] * level;
+        level = Math.floor(lines / 10) + 1;
+        dropInterval = 1000 - (level - 1) * 100;
+        updateScore();
       }
     }
     
-    function manualCalc() {
-      const salary = parseFloat(document.getElementById('salary').value) || 0;
-      const years = parseFloat(document.getElementById('years').value) || 0;
-      const notice = document.getElementById('notice').value;
-      const reason = document.getElementById('reason').value;
-      
-      let base = salary * years;
-      if (notice === 'no') base += salary;
-      if (reason === 'illegal') base *= 2;
-      
-      return `赔偿金额：¥${base.toLocaleString()}<br>计算：${salary}×${years}${notice === 'no' ? '+1个月代通知金' : ''}${reason === 'illegal' ? '×2（违法解除）' : ''}`;
+    // 更新分数显示
+    function updateScore() {
+      document.getElementById('score').textContent = score;
+      document.getElementById('level').textContent = level;
+      document.getElementById('lines').textContent = lines;
     }
     
-    function unlockReport() {
-      alert('支付功能需接入微信支付。\n\n当前步骤：\n1. 用户添加你个人微信\n2. 支付9.9元\n3. 你手动发送PDF模板');
+    // 绘制方块
+    function drawBlock(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
     }
+    
+    // 绘制游戏
+    function draw() {
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      
+      for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+          if (board[y][x]) {
+            drawBlock(x, y, board[y][x]);
+          }
+        }
+      }
+      
+      if (currentPiece) {
+        for (let y = 0; y < currentPiece.shape.length; y++) {
+          for (let x = 0; x < currentPiece.shape[y].length; x++) {
+            if (currentPiece.shape[y][x]) {
+              drawBlock(currentPiece.x + x, currentPiece.y + y, currentPiece.color);
+            }
+          }
+        }
+      }
+    }
+    
+    // 旋转方块
+    function rotate(piece) {
+      const rotated = piece.shape[0].map((_, i) =>
+        piece.shape.map(row => row[i]).reverse()
+      );
+      const newPiece = { ...piece, shape: rotated };
+      if (!collision(newPiece, piece.x, piece.y)) {
+        return newPiece;
+      }
+      return piece;
+    }
+    
+    // 移动方块
+    function move(dir) {
+      if (!collision(currentPiece, currentPiece.x + dir, currentPiece.y)) {
+        currentPiece.x += dir;
+      }
+    }
+    
+    // 下落方块
+    function drop() {
+      if (!collision(currentPiece, currentPiece.x, currentPiece.y + 1)) {
+        currentPiece.y++;
+      } else {
+        merge(currentPiece);
+        clearLines();
+        currentPiece = getRandomPiece();
+        if (collision(currentPiece, currentPiece.x, currentPiece.y)) {
+          gameOver();
+        }
+      }
+    }
+    
+    // 游戏结束
+    function gameOver() {
+      gameRunning = false;
+      alert(`游戏结束！\n分数: ${score}\n等级: ${level}\n行数: ${lines}`);
+      resetBoard();
+      score = 0;
+      lines = 0;
+      level = 1;
+      updateScore();
+      currentPiece = null;
+      draw();
+    }
+    
+    // 游戏循环
+    function gameUpdate(timestamp) {
+      if (timestamp - lastDropTime > dropInterval) {
+        drop();
+        lastDropTime = timestamp;
+      }
+      draw();
+      if (gameRunning) {
+        requestAnimationFrame(gameUpdate);
+      }
+    }
+    
+    // 开始游戏
+    function startGame() {
+      if (!gameRunning) {
+        gameRunning = true;
+        score = 0;
+        lines = 0;
+        level = 1;
+        updateScore();
+        resetBoard();
+        currentPiece = getRandomPiece();
+        lastDropTime = 0;
+        requestAnimationFrame(gameUpdate);
+      }
+    }
+    
+    // 键盘控制
+    document.addEventListener('keydown', (e) => {
+      if (!gameRunning || !currentPiece) return;
+      
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'a':
+          e.preventDefault();
+          move(-1);
+          draw();
+          break;
+        case 'ArrowRight':
+        case 'd':
+          e.preventDefault();
+          move(1);
+          draw();
+          break;
+        case 'ArrowDown':
+        case 's':
+          e.preventDefault();
+          drop();
+          draw();
+          break;
+        case 'ArrowUp':
+        case 'w':
+          e.preventDefault();
+          currentPiece = rotate(currentPiece);
+          draw();
+          break;
+        case ' ':
+          e.preventDefault();
+          while (!collision(currentPiece, currentPiece.x, currentPiece.y + 1)) {
+            currentPiece.y++;
+          }
+          drop();
+          draw();
+          break;
+      }
+    });
+    
+    // 移动端控制处理（防止默认触摸行为）
+    function handleMobileMove(dir, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!gameRunning || !currentPiece) return;
+      move(dir);
+      draw();
+    }
+    
+    function handleMobileRotate(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!gameRunning || !currentPiece) return;
+      currentPiece = rotate(currentPiece);
+      draw();
+    }
+    
+    function handleMobileDrop(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!gameRunning || !currentPiece) return;
+      drop();
+      draw();
+    }
+    
+    function handleMobileHardDrop(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!gameRunning || !currentPiece) return;
+      while (!collision(currentPiece, currentPiece.x, currentPiece.y + 1)) {
+        currentPiece.y++;
+      }
+      drop();
+      draw();
+    }
+    
+    // 初始化游戏
+    init();
+    draw();
   </script>
 </body>
 </html>
