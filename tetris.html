@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全能应用中心 - 游戏、办公、工具</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    /* 背景装饰 */
+    .background-decoration {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .background-decoration::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: drift 20s linear infinite;
+    }
+    
+    @keyframes drift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+    
+    /* 主容器 */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    /* 头部 */
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .logo {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInDown 1s ease;
+    }
+    
+    .slogan {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    
+    /* 类目网格 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    
+    .category-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      animation: fadeIn 0.8s ease;
+    }
+    
+    .category-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .category-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    
+    .category-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    
+    .category-desc {
+      font-size: 1rem;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+    
+    .category-item-count {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    
+    /* 特色推荐 */
+    .featured-section {
+      margin-top: 60px;
+      text-align: center;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+    
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+    
+    .featured-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .featured-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .featured-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .featured-title {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    /* 动画 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 2.5rem;
+      }
+      
+      .slogan {
+        font-size: 1.1rem;
+      }
+      
+      .main-container {
+        padding: 30px 15px;
+      }
+      
+      .category-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .category-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-decoration"></div>
+  
+  <div class="main-container">
+    <header class="header">
+      <h1 class="logo">🚀 全能应用中心</h1>
+      <p class="slogan">一站式服务平台 · 游戏、办公、工具应有尽有</p>
+    </header>
+    
+    <section class="category-grid">
+      <div class="category-card" onclick="openCategory('games')">
+        <div class="category-icon">🎮</div>
+        <h2 class="category-title">游戏中心</h2>
+        <p class="category-desc">经典游戏集合，放松身心，享受时光</p>
+        <div class="category-item-count">共 1 个游戏</div>
+      </div>
+      
+      <div class="category-card" onclick="openCategory('office')">
+        <div class="category-icon">💼</div>
+        <h2 class="category-title">办公工具</h2>
+        <p class="category-desc">高效办公，提升生产力的必备工具</p>
+        <div class="category-item-count">共 0 个工具</div>
+      </div>
+      
+      <div class="category-card" onclick="openCategory('tools')">
+        <div class="category-icon">🔧</div>
+        <h2 class="category-title">实用工具</h2>
+        <p class="category-desc">生活中常用的便捷小工具</p>
+        <div class="category-item-count">共 1 个工具</div>
+      </div>
+    </section>
+    
+    <section class="featured-section">
+      <h2 class="section-title">🔥 热门推荐</h2>
+      <div class="featured-grid">
+        <div class="featured-card" onclick="openGame('tetris')">
+          <div class="featured-icon">🎯</div>
+          <div class="featured-title">俄罗斯方块</div>
+          <p>经典益智游戏，锻炼反应力</p>
+        </div>
+        <div class="featured-card" onclick="openTool('legal-calc')">
+          <div class="featured-icon">💵</div>
+          <div class="featured-title">裁员赔偿计算器</div>
+          <p>专业的法律计算工具</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function openCategory(category) {
+      switch(category) {
+        case 'games':
+          alert('游戏中心 - 俄罗斯方块');
+          openGame('tetris');
+          break;
+        case 'office':
+          alert('办公工具 - 即将推出');
+          break;
+        case 'tools':
+          alert('实用工具 - 裁员赔偿计算器');
+          openTool('legal-calc');
+          break;
+      }
+    }
+    
+    function openGame(game) {
+      localStorage.setItem('activeView', 'game');
+      window.location.href = '?view=game';
+    }
+    
+    function openTool(tool) {
+      localStorage.setItem('activeView', 'tools');
+      window.location.href = '?view=tools';
+    }
+    
+    // URL参数处理
+    function handleURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      const view = params.get('view');
+      
+      if (view === 'game') {
+        // 加载游戏页面
+        document.write('<scr'+'ipt>window.location.href = "game.html";</scr'+'ipt>');
+      } else if (view === 'tools') {
+        // 加载工具页面
+        document.write('<scr'+'ipt>window.location.href = "tools.html";</scr'+'ipt>');
+      }
+    }
+    
+    handleURLParams();
+  </script>
+</body>
+</html>

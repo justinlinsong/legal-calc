@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于我们 - 全能应用中心</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      padding: 0;
+    }
+    
+    .back-button {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+    
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-2px);
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 20px 60px;
+    }
+    
+    .header-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 60px 40px;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header-card h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: #2c3e50;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .header-card p {
+      font-size: 1.2rem;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    
+    .content-grid {
+      display: grid;
+      gap: 30px;
+    }
+    
+    .info-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .info-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .info-card h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .info-card h2::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 28px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 3px;
+    }
+    
+    .info-card p {
+      margin-bottom: 15px;
+      line-height: 1.8;
+      color: #495057;
+    }
+    
+    .info-card ul {
+      margin: 20px 0;
+      padding-left: 30px;
+    }
+    
+    .info-card li {
+      margin-bottom: 12px;
+      line-height: 1.8;
+      color: #495057;
+    }
+    
+    .info-card li::marker {
+      color: #667eea;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      margin: 30px 0 20px;
+      color: #667eea;
+      font-weight: 600;
+    }
+    
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .feature-item {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-item:hover {
+      border-color: #667eea;
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+    }
+    
+    .feature-item h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+    
+    .feature-item p {
+      font-size: 0.95rem;
+      color: #6c757d;
+      margin: 0;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+      }
+      
+      .container {
+        padding: 80px 15px 40px;
+      }
+      
+      .header-card {
+        padding: 40px 25px;
+        margin-bottom: 20px;
+      }
+      
+      .header-card h1 {
+        font-size: 2rem;
+      }
+      
+      .info-card {
+        padding: 30px 20px;
+      }
+      
+      .info-card h2 {
+        font-size: 1.5rem;
+      }
+      
+      .back-button {
+        top: 15px;
+        left: 15px;
+        padding: 8px 16px;
+      }
+      
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="goBack()"<← 返回首页</button>
+  
+  <div class="container">
+    <div class="header-card">
+      <h1>🎯 全能应用中心</h1>
+      <p>一站式游戏、办公、工具集合平台，为您提供便捷高效的服务体验！</p>
+    </div>
+    
+    <div class="content-grid">
+      <div class="info-card">
+        <h2>项目介绍</h2>
+        <p>全能应用中心是一个集娱乐、办公、实用工具于一体的综合性应用平台。我们致力于为用户提供一站式解决方案，通过简洁直观的界面设计和丰富多样的功能模块，满足您在不同场景下的使用需求。</p>
+        <p>平台采用现代化的 Web 技术构建，具有响应式设计特点，能够完美适配各种设备，包括桌面电脑、平板和手机等。我们始终追求用户体验的极致，不断优化界面交互和功能性能。</p>
+      </div>
+      
+      <div class="info-card">
+        <h2>核心功能
+        </h2>
+        <div class="feature-list">
+          <div class="feature-item">
+            <h3>🎮 游戏中心</h3>
+            <p>提供经典游戏俄罗斯方块，为您的休闲时光增添乐趣。游戏支持电脑端和手机端操作，具有流畅的游戏体验和现代化的界面设计。</p>
+          </div>
+          
+          <div class="feature-item">
+            <h3>💼 办公工具</h3>
+            <p>为办公场景预留的专用区域，未来将集成各类实用办公工具，包括文档处理、日程管理等功能，提升您的工作效率。</p>
+          </div>
+          
+          <div class="feature-item">
+            <h3>🛠️ 实用工具</h3>
+            <p>提供各类实用工具，包括裁员赔偿计算器、生活计算器等。这些工具均根据实际需求设计，能够快速准确地解决您遇到的问题。</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <h2>使用手册</h2>
+        
+        <h3 class="section-title">首页导航</h3>
+        <ul>
+          <li>**访问首页**：通过浏览器访问 http://localhost:55510 即可进入全能应用中心首页</li>
+          <li>**类目选择**：首页展示三个主要功能类目（游戏、办公、工具）的卡片，点击任意卡片即可进入对应功能页面</li>
+          <li>**快速访问**：热门推荐区域提供快速访问入口，可一键直达俄罗斯方块游戏和裁员赔偿计算器</li>
+        </ul>
+        
+        <h3 class="section-title">游戏功能使用</h3>
+        <ul>
+          <li>**进入游戏**：点击首页游戏类目或热门推荐中的俄罗斯方块图标进入游戏界面</li>
+          <li>**电脑端操作**：使用方向键 ←、→、↓ 控制方块移动，方向键 ↑ 或空格键旋转方块</li>
+          <li>**手机端操作**：游戏界面底部提供虚拟按键，点击相应按钮进行移动、旋转、加速下落等操作</li>
+          <li>**游戏目标**：通过移动和旋转方块，将它们完整地填充到一行，消除行获得分数，分数越高等级越高，游戏速度也会相应加快</li>
+        </ul>
+        
+        <h3 class="section-title">工具功能使用</h3>
+        <ul>
+          <li>**进入工具中心**：点击首页工具类目卡片，进入工具集合页面</li>
+          <li>**裁员赔偿计算**：
+            <br>- 输入被裁员工的月薪水平
+            <br>- 填写在公司的工作年限
+            <br>- 输入公司支付的违约金
+            <br>- 输入税前工资
+            <br>- 点击计算按钮，系统自动计算出应得赔偿金额
+          </li>
+          <li>**数据准确性**：请确保输入的信息真实准确，计算结果仅供参考，具体赔偿金额请咨询专业人士</li>
+        </ul>
+      </div>
+      
+      <div class="info-card">
+        <h2>技术架构
+        </h2>
+        <p>全能应用中心采用纯前端技术栈构建，包括 HTML5、CSS3 和原生 JavaScript。主要技术特点如下：</p>
+        <ul>
+          <li>**响应式设计**：使用 CSS Grid 和 Flexbox 布局，自动适配各种屏幕尺寸</li>
+          <li>**现代化界面**：采用渐变色彩、毛玻璃效果和动画过渡，提升用户体验</li>
+          <li>**交互优化**：为所有可交互元素添加了流畅的 hover 和点击反馈
+          </li>
+          <li>**性能优化**：代码结构清晰，功能模块化，加载速度快
+          </li>
+        </ul>
+      </div>
+      
+      <div class="info-card">
+        <h2>更新日志</h2>
+        <ul>
+          <li>**版本 1.0.0** (2025-12-23)：
+            <ul style="margin-top: 10px;">
+              <li>新增导航首页，包含游戏、办公、工具三个类目
+              </li>
+              <li>新增俄罗斯方块游戏，支持电脑端和手机端操作
+              </li>
+              <li>新增裁员赔偿计算器工具
+              </li>
+              <li>新增项目说明页面和使用手册
+              </li>
+              <li>整体 UI 风格统一，界面美观现代化
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

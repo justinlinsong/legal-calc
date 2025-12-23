@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>游戏中心 - 全能应用中心</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+    
+    .back-button {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-2px);
+    }
+    
+    .content {
+      padding: 40px;
+    }
+    
+    .games-grid {
+      display: grid;
+      gap: 30px;
+    }
+    
+    .game-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      border-color: #667eea;
+    }
+    
+    .game-thumbnail {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 4rem;
+    }
+    
+    .game-info {
+      padding: 25px;
+    }
+    
+    .game-title {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+    
+    .game-desc {
+      color: #6c757d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .play-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .play-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+    }
+    
+    .empty-state-icon {
+      font-size: 6rem;
+      margin-bottom: 20px;
+    }
+    
+    .empty-state h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #495057;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+      }
+      
+      .container {
+        border-radius: 0;
+      }
+      
+      .header {
+        padding: 40px 20px 30px;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+      
+      .back-button {
+        top: 15px;
+        left: 15px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="goBack()"<← 返回首页</button>
+  
+  <div class="container">
+    <div class="header">
+      <h1>🎮 游戏中心</h1>
+      <p>轻松娱乐，释放压力，享受游戏乐趣！</p>
+    </div>
+    
+    <div class="content">
+      <div class="games-grid">
+        <div class="game-card">
+          <div class="game-thumbnail">🧱</div>
+          <div class="game-info">
+            <h2 class="game-title">俄罗斯方块</h2>
+            <p class="game-desc">经典的俄罗斯方块游戏，挑战你的反应速度和空间想象力！</p>
+            <button class="play-button" onclick="playTetris()">开始游戏</button>
+          </div>
+        </div>
+        
+        <div class="empty-state">
+          <div class="empty-state-icon">⏳</div>
+          <h2>更多精彩游戏即将上线...</h2>
+          <p>我们正在精心准备更多有趣的游戏，敬请期待！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = 'index.html';
+    }
+    
+    function playTetris() {
+      window.location.href = 'tetris.html';
+    }
+  </script>
+</body>
+</html>
