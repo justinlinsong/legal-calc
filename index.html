@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>全能应用中心 - 游戏、办公、工具集合</title>
   <style>
     * {
@@ -104,31 +104,56 @@
     .category-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin: 60px 0;
+      gap: 35px;
+      margin: 60px auto;
+      max-width: 1000px;
+      width: 100%;
     }
     
     .category-card {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 40px 30px;
+      border-radius: 24px;
+      padding: 50px 30px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.4s ease;
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 3px solid rgba(255, 255, 255, 0.3);
       animation: fadeInUp 0.8s ease backwards;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .category-card:hover::before {
+      left: 100%;
     }
     
     .category-card:nth-child(1) { animation-delay: 0.1s; }
     .category-card:nth-child(2) { animation-delay: 0.2s; }
     .category-card:nth-child(3) { animation-delay: 0.3s; }
+    .category-card:nth-child(4) { animation-delay: 0.4s; }
+    
+    .category-card:active {
+      transform: scale(0.95);
+    }
     
     .category-card:hover {
-      transform: translateY(-10px);
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.4);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transform: translateY(-15px);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
     }
     
     .category-icon {
@@ -144,49 +169,80 @@
     .category-name {
       font-size: 1.8rem;
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
     
     .category-desc {
       font-size: 1rem;
-      opacity: 0.8;
+      opacity: 0.85;
       line-height: 1.5;
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     /* 特色推荐 */
     .featured-section {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 50px 30px;
+      border-radius: 24px;
+      padding: 60px 40px;
       width: 100%;
-      max-width: 900px;
+      max-width: 1000px;
       text-align: center;
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      margin-top: 40px;
     }
     
     .featured-title {
-      font-size: 2rem;
-      margin-bottom: 30px;
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      font-weight: 700;
     }
     
     .featured-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
     }
     
     .featured-card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 25px;
-      border-radius: 15px;
-      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 40px 30px;
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .featured-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .featured-card:hover::before {
+      left: 100%;
+    }
+    
+    .featured-card:active {
+      transform: scale(0.95);
     }
     
     .featured-card:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.28);
+      transform: scale(1.08);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
     }
     
     .featured-icon {
@@ -225,32 +281,60 @@
     /* 响应式设计 */
     @media (max-width: 768px) {
       .container {
-        padding: 40px 15px;
+        padding: 40px 15px 60px;
       }
       
       .header h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
       }
       
       .header p {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
       
       .category-grid {
         grid-template-columns: 1fr;
         gap: 25px;
+        margin: 40px 0;
       }
       
       .category-card {
-        padding: 30px 20px;
+        padding: 35px 25px;
       }
       
       .category-icon {
         font-size: 4rem;
       }
       
+      .category-name {
+        font-size: 1.6rem;
+      }
+      
+      .featured-section {
+        padding: 40px 20px;
+      }
+      
       .featured-cards {
         grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .featured-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .category-card {
+        padding: 30px 20px;
+      }
+      
+      .featured-section {
+        padding: 30px 15px;
       }
     }
   </style>
@@ -265,25 +349,25 @@
     </div>
     
     <div class="category-grid">
-      <div class="category-card" onclick="goTo('games.html')">
+      <div class="category-card">
         <div class="category-icon">🎮</div>
         <div class="category-name">游戏</div>
         <div class="category-desc">经典俄罗斯方块等精彩游戏，休闲娱乐好去处！</div>
       </div>
       
-      <div class="category-card" onclick="goTo('office.html')">
+      <div class="category-card">
         <div class="category-icon">💼</div>
         <div class="category-name">办公</div>
         <div class="category-desc">专业办公工具，提升工作效率，打造完美办公体验。</div>
       </div>
       
-      <div class="category-card" onclick="goTo('tools.html')">
+      <div class="category-card">
         <div class="category-icon">🛠️</div>
         <div class="category-name">工具</div>
         <div class="category-desc">实用生活工具，包括裁员赔偿计算器等贴心助手。</div>
       </div>
       
-      <div class="category-card" onclick="goTo('about.html')">
+      <div class="category-card">
         <div class="category-icon">ℹ️</div>
         <div class="category-name">关于我们</div>
         <div class="category-desc">项目说明、使用手册、技术架构等详细信息。</div>
@@ -293,11 +377,11 @@
     <div class="featured-section">
       <h2 class="featured-title">✨ 热门推荐</h2>
       <div class="featured-cards">
-        <div class="featured-card" onclick="goTo('tetris.html')">
+        <div class="featured-card">
           <div class="featured-icon">🧱</div>
           <div class="featured-name">俄罗斯方块</div>
         </div>
-        <div class="featured-card" onclick="goTo('tools.html')">
+        <div class="featured-card">
           <div class="featured-icon">💰</div>
           <div class="featured-name">裁员赔偿计算</div>
         </div>
@@ -306,17 +390,82 @@
   </div>
 
   <script>
+    // 安全的跳转函数
     function goTo(page) {
+      console.log('正在跳转:', page);
       window.location.href = page;
     }
     
-    // 添加卡片的悬停效果增强
-    document.querySelectorAll('.category-card, .featured-card').forEach(card => {
-      card.addEventListener('click', function() {
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          this.style.transform = '';
-        }, 100);
+    // 添加交互事件到类目卡片
+    document.addEventListener('DOMContentLoaded', () => {
+      // 类目卡片点击
+      const categoryCards = document.querySelectorAll('.category-card');
+      categoryCards.forEach((card, index) => {
+        // 阻止不必要的事件冒泡
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          
+          const pages = ['games.html', 'office.html', 'tools.html', 'about.html'];
+          const targetPage = pages[index];
+          console.log('类目卡片点击:', targetPage);
+          
+          setTimeout(() => {
+            goTo(targetPage);
+          }, 150); // 添加小延迟增强层次感
+        });
+        
+        // 防止触摸设备误触
+        card.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+        });
+        
+        card.addEventListener('touchend', (e) => {
+          e.stopPropagation();
+        });
+      });
+      
+      // 特色推荐卡片点击
+      const featuredCards = document.querySelectorAll('.featured-card');
+      featuredCards.forEach((card, index) => {
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          
+          const pages = ['tetris.html', 'tools.html'];
+          const targetPage = pages[index];
+          console.log('特色推荐点击:', targetPage);
+          
+          setTimeout(() => {
+            goTo(targetPage);
+          }, 100); // 添加小延迟
+        });
+      });
+      
+      // 防止点击空白区域触发不必要的操作
+      document.addEventListener('click', (e) => {
+        // 检查点击目标是否在任何可点击卡片之外
+        let isClickOnCard = false;
+        
+        // 检查是否点击在类目卡片上
+        categoryCards.forEach(card => {
+          if (card.contains(e.target)) {
+            isClickOnCard = true;
+          }
+        });
+        
+        // 检查是否点击在特色卡片上
+        featuredCards.forEach(card => {
+          if (card.contains(e.target)) {
+            isClickOnCard = true;
+          }
+        });
+        
+        // 如果点击在空白区域，不执行任何操作
+        if (!isClickOnCard) {
+          console.log('点击空白区域，忽略');
+          return;
+        }
       });
     });
   </script>
